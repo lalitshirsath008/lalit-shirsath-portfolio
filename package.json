@@ -2,15 +2,22 @@
   "name": "web-pro",
   "version": "1.0.0",
   "description": "A modern, responsive portfolio website built with React and TypeScript.",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
   "keywords": [],
-  "author": "",
+  "homepage": "https://github.com/lalitshirsath008/lalit-shirsath-portfolio#readme",
+  "bugs": {
+    "url": "https://github.com/lalitshirsath008/lalit-shirsath-portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lalitshirsath008/lalit-shirsath-portfolio.git"
+  },
   "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "postcss.config.js",
+  "scripts": {
+  "build": "vite build"
+},
   "dependencies": {
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
@@ -25,7 +32,7 @@
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.0.2",
+    "typescript": "^5.8.3",
     "vite": "^4.4.5"
   }
 }
