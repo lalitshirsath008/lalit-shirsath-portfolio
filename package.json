@@ -15,7 +15,6 @@
   "author": "",
   "type": "module",
   "main": "postcss.config.js",
-  "build": "tsc && vite build",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
