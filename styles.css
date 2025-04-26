@@ -70,14 +70,18 @@ nav {
 }
 
 /* Hero Section */
+
 .hero {
+    padding: 3rem 1rem; /* Adjust padding for tablet */
+    width: 100%; /* Ensure it takes full width */
+    max-width: 1200px; /* Optional: limit max width */
+    margin: 0 auto; /* Center the hero section */
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    padding: var(--section-padding);
 }
 
 .hero-content {
@@ -414,34 +418,54 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
+/* Improved Tablet/Mobile Responsiveness */
+@media (max-width: 1024px) {
+    * {
+        box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
+    }
+    /* Hero Section Adjustments */
+    .hero {
+        padding: 3rem 1rem; /* Adjust padding for tablets */
+        margin-top: 5cm; /* Move the hero section down by 5 cm */
+    }
+    
+    .hero-content {
+        max-width: 90vw; /* More flexible width */
     }
     
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem; /* Slightly smaller heading */
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1rem; /* Even tighter padding for mobile */
+        min-height: auto; /* Remove fixed min-height */
+        margin-top: 5cm; /* Move the hero section down by 5 cm */
+    }
+    
+    .hero-content h1 {
+        font-size: 2.2rem; /* More mobile-friendly size */
     }
     
     .subtitle {
         font-size: 1.2rem;
     }
     
-    .skills-container {
-        grid-template-columns: 1fr;
+    .hero-description {
+        font-size: 1rem;
     }
-    
-    .project-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .project-card {
-        max-width: 100%;
-    }
-    
-    .project-tech span {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.6rem;
-    }
-} 
+}
+
+/* Prevent horizontal overflow */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.container {
+    width: 100%; /* Ensure it takes full width */
+    max-width: 1200px; /* Optional: limit max width */
+    margin: 0 auto; /* Center the container */
+}
