@@ -1,0 +1,46 @@
+{
+  "name": "web-pro",
+  "version": "1.0.0",
+  "description": "A modern, responsive portfolio website built with React and TypeScript.",
+  "keywords": [],
+  "homepage": "https://github.com/lalitshirsath008/lalit-shirsath-portfolio#readme",
+  "bugs": {
+    "url": "https://github.com/lalitshirsath008/lalit-shirsath-portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lalitshirsath008/lalit-shirsath-portfolio.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "postcss.config.js",
+  "build": "tsc && vite build",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "postinstall": "chmod +x ./node_modules/.bin/vite"
+  },
+  "dependencies": {
+    "firebase": "^12.19.0",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.8.3",
+    "vite": "^4.5.13"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
