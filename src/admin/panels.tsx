@@ -2,17 +2,17 @@ import React from 'react';
 import CollectionPanel from './CollectionPanel';
 import { Field, TextInput, TextAreaInput, NumberInput, IconSelect, ColorInput, StringListField, PairListField } from './fields';
 import { getIcon } from '../lib/icons';
-import { SkillDoc, ProjectDoc, ExperienceDoc, EducationDoc } from '../lib/types';
+import { SkillDoc, ProjectDoc, ExperienceDoc, EducationDoc, CertificationDoc } from '../lib/types';
 
 export const SkillsPanel: React.FC = () => (
   <CollectionPanel<SkillDoc>
     name="skills"
     title="Skills"
-    makeBlank={() => ({ name: '', level: 75, iconName: 'FaCode', color: '#F2ECDE', order: 0 })}
+    makeBlank={() => ({ name: '', level: 75, iconName: 'FaCode', color: '#ffffff', order: 0 })}
     renderForm={(draft, setDraft) => (
       <>
         <Field label="Name">
-          <TextInput value={draft.name} onChange={(v) => setDraft((p) => ({ ...p, name: v }))} placeholder="e.g. Rust" />
+          <TextInput value={draft.name} onChange={(v) => setDraft((p) => ({ ...p, name: v }))} placeholder="e.g. Tableau" />
         </Field>
         <Field label={`Proficiency - ${draft.level}%`}>
           <NumberInput value={draft.level} min={0} max={100} onChange={(v) => setDraft((p) => ({ ...p, level: v }))} />
@@ -31,8 +31,8 @@ export const SkillsPanel: React.FC = () => (
         <div className="flex items-center gap-3">
           <Icon className="w-6 h-6" style={{ color: item.color }} />
           <div>
-            <p className="font-semibold text-bauhaus-cream">{item.name}</p>
-            <p className="text-xs text-bauhaus-cream/50">{item.level}% proficiency</p>
+            <p className="font-semibold text-white">{item.name}</p>
+            <p className="text-xs text-white/45">{item.level}% proficiency</p>
           </div>
         </div>
       );
@@ -72,11 +72,11 @@ export const ProjectsPanel: React.FC = () => (
       const Icon = getIcon(item.iconName);
       return (
         <div className="flex items-start gap-3">
-          <Icon className="w-6 h-6 text-bauhaus-cream mt-1 flex-shrink-0" />
+          <Icon className="w-6 h-6 text-white mt-1 flex-shrink-0" />
           <div>
-            <p className="font-semibold text-bauhaus-cream">{item.title}</p>
-            <p className="text-xs text-bauhaus-cream/50 line-clamp-2">{item.description}</p>
-            <p className="text-xs text-bauhaus-cream/40 mt-1">{item.techIcons.map((t) => t.name).join(', ')}</p>
+            <p className="font-semibold text-white">{item.title}</p>
+            <p className="text-xs text-white/45 line-clamp-2">{item.description}</p>
+            <p className="text-xs text-white/35 mt-1">{item.techIcons.map((t) => t.name).join(', ')}</p>
           </div>
         </div>
       );
@@ -102,7 +102,7 @@ export const ExperiencePanel: React.FC = () => (
     renderForm={(draft, setDraft) => (
       <>
         <Field label="Role title">
-          <TextInput value={draft.title} onChange={(v) => setDraft((p) => ({ ...p, title: v }))} placeholder="e.g. Backend Intern" />
+          <TextInput value={draft.title} onChange={(v) => setDraft((p) => ({ ...p, title: v }))} placeholder="e.g. Business Intelligence Analyst" />
         </Field>
         <Field label="Company">
           <TextInput value={draft.company} onChange={(v) => setDraft((p) => ({ ...p, company: v }))} />
@@ -135,10 +135,10 @@ export const ExperiencePanel: React.FC = () => (
       const Icon = getIcon(item.iconName);
       return (
         <div className="flex items-start gap-3">
-          <Icon className="w-6 h-6 text-bauhaus-cream mt-1 flex-shrink-0" />
+          <Icon className="w-6 h-6 text-white mt-1 flex-shrink-0" />
           <div>
-            <p className="font-semibold text-bauhaus-cream">{item.title}</p>
-            <p className="text-xs text-bauhaus-cream/50">{item.company} · {item.period}</p>
+            <p className="font-semibold text-white">{item.title}</p>
+            <p className="text-xs text-white/45">{item.company} · {item.period}</p>
           </div>
         </div>
       );
@@ -171,7 +171,7 @@ export const EducationPanel: React.FC = () => (
           <TextInput value={draft.year} onChange={(v) => setDraft((p) => ({ ...p, year: v }))} placeholder="e.g. July 2022 - Jun 2025" />
         </Field>
         <Field label="Score / description">
-          <TextInput value={draft.description} onChange={(v) => setDraft((p) => ({ ...p, description: v }))} placeholder="e.g. CGPA: 8.23/10" />
+          <TextInput value={draft.description} onChange={(v) => setDraft((p) => ({ ...p, description: v }))} placeholder="e.g. CGPA: 8.08/10" />
         </Field>
         <Field label="Icon">
           <IconSelect value={draft.iconName} onChange={(v) => setDraft((p) => ({ ...p, iconName: v }))} />
@@ -189,10 +189,47 @@ export const EducationPanel: React.FC = () => (
       const Icon = getIcon(item.iconName);
       return (
         <div className="flex items-start gap-3">
-          <Icon className="w-6 h-6 text-bauhaus-cream mt-1 flex-shrink-0" />
+          <Icon className="w-6 h-6 text-white mt-1 flex-shrink-0" />
           <div>
-            <p className="font-semibold text-bauhaus-cream">{item.degree}</p>
-            <p className="text-xs text-bauhaus-cream/50">{item.institution}</p>
+            <p className="font-semibold text-white">{item.degree}</p>
+            <p className="text-xs text-white/45">{item.institution}</p>
+          </div>
+        </div>
+      );
+    }}
+  />
+);
+
+export const CertificationsPanel: React.FC = () => (
+  <CollectionPanel<CertificationDoc>
+    name="certifications"
+    title="Certifications"
+    makeBlank={() => ({ title: '', issuer: '', iconName: 'FaCertificate', order: 0 })}
+    renderForm={(draft, setDraft) => (
+      <>
+        <Field label="Title">
+          <TextInput
+            value={draft.title}
+            onChange={(v) => setDraft((p) => ({ ...p, title: v }))}
+            placeholder="e.g. AI Fluency: Framework & Foundations"
+          />
+        </Field>
+        <Field label="Issuer">
+          <TextInput value={draft.issuer} onChange={(v) => setDraft((p) => ({ ...p, issuer: v }))} placeholder="e.g. Anthropic" />
+        </Field>
+        <Field label="Icon">
+          <IconSelect value={draft.iconName} onChange={(v) => setDraft((p) => ({ ...p, iconName: v }))} />
+        </Field>
+      </>
+    )}
+    renderSummary={(item) => {
+      const Icon = getIcon(item.iconName);
+      return (
+        <div className="flex items-start gap-3">
+          <Icon className="w-6 h-6 text-white mt-1 flex-shrink-0" />
+          <div>
+            <p className="font-semibold text-white">{item.title}</p>
+            <p className="text-xs text-white/45">{item.issuer}</p>
           </div>
         </div>
       );

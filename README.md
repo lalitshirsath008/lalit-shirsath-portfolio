@@ -1,6 +1,6 @@
 # Lalit Shirsath - Portfolio
 
-A React + TypeScript + Tailwind portfolio (Bauhaus-styled), with its Skills/Projects/Experience/Education
+A React + TypeScript + Tailwind portfolio, with its Skills/Projects/Experience/Education/Certifications
 content stored in Firebase so it can be edited from a built-in `/admin` panel instead of editing code.
 
 ## Stack
@@ -41,17 +41,21 @@ starter content in `src/lib/seedData.ts`.
    ```
 
    This keeps content publicly readable (so the site works for visitors) but only writable by a signed-in user (you).
-8. Restart `npm run dev`, open `/admin`, sign in, and click **Seed starter content** once to load the existing
-   Skills/Projects/Experience/Education into Firestore. From then on, edit/add/delete from the admin panel.
+8. Restart `npm run dev`, open `/admin`, sign in, and click **Seed starter content** once (Overview tab) to
+   load the resume-sourced starter content into Firestore. From then on, edit/add/delete from the admin panel.
 
 ## Admin panel
 
 - URL: `/admin` (e.g. `http://localhost:5173/admin` locally, or `https://yoursite.com/admin` once deployed).
 - Only the user(s) you create in Firebase Authentication can sign in - there's no public sign-up.
-- Each tab (Skills, Projects, Experience, Education) lets you add, edit, reorder (↑/↓) and delete entries.
+- Each tab (Skills, Projects, Experience, Education, Certifications) lets you add, edit, reorder (↑/↓) and
+  delete entries.
 - Icons are picked from a built-in icon library (`src/lib/icons.ts`) rather than typed free-form, since a
   database can only store an icon's *name*, not the icon itself.
 - The public site reads this content once per page load - a new visit (or refresh) picks up your edits.
+- **Seed starter content** (Overview tab) makes every collection exactly match `src/lib/seedData.ts` - it
+  deletes anything not in that bundled set. Good for first-time setup or resetting to a known-good state;
+  don't use it if you've added entries you want to keep that aren't in that file.
 
 ## Deployment
 

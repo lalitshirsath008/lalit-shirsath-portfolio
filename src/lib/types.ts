@@ -45,3 +45,11 @@ export interface EducationDoc {
   achievements: string[];
   order: number;
 }
+
+export interface CertificationDoc {
+  id?: string;
+  title: string;
+  issuer: string;
+  iconName: string;
+  order: number;
+}

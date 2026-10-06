@@ -6,17 +6,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        bauhaus: {
-          red: '#E8432E',
-          blue: '#2F6FED',
-          yellow: '#F5C518',
-          cream: '#F2ECDE',
-        },
-      },
       fontFamily: {
-        display: ['"Archivo Black"', 'sans-serif'],
-        sans: ['"Space Grotesk"', 'sans-serif'],
+        sans: ['"Inter"', 'sans-serif'],
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',

@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { seedItem } from '../lib/content';
-import { seedSkills, seedProjects, seedExperiences, seedEducation } from '../lib/seedData';
+import { replaceCollection } from '../lib/content';
+import {
+  seedSkills,
+  seedProjects,
+  seedExperiences,
+  seedEducation,
+  seedCertifications,
+} from '../lib/seedData';
 
 const OverviewPanel: React.FC = () => {
   const [seeding, setSeeding] = useState(false);
@@ -11,8 +17,9 @@ const OverviewPanel: React.FC = () => {
   const runSeed = async () => {
     if (
       !window.confirm(
-        'This writes the original portfolio content into Firestore, using fixed ids. ' +
-          'If you already edited an item that shares one of those ids, this will overwrite it back to the original. Continue?'
+        'This makes every collection match the bundled starter content exactly: it overwrites items that ' +
+          'share an id with the starter set, and DELETES anything else - including items you added yourself ' +
+          'or content from a previous version of this site. Continue?'
       )
     ) {
       return;
@@ -20,10 +27,11 @@ const OverviewPanel: React.FC = () => {
     setSeeding(true);
     setMessage('');
     try {
-      for (const { id, ...rest } of seedSkills) await seedItem('skills', id, rest);
-      for (const { id, ...rest } of seedProjects) await seedItem('projects', id, rest);
-      for (const { id, ...rest } of seedExperiences) await seedItem('experiences', id, rest);
-      for (const { id, ...rest } of seedEducation) await seedItem('education', id, rest);
+      await replaceCollection('skills', seedSkills);
+      await replaceCollection('projects', seedProjects);
+      await replaceCollection('experiences', seedExperiences);
+      await replaceCollection('education', seedEducation);
+      await replaceCollection('certifications', seedCertifications);
       setMessage('Starter content seeded. Switch tabs to see it, or refresh the public site.');
     } catch (e) {
       setMessage(e instanceof Error ? e.message : 'Seeding failed.');
@@ -34,31 +42,33 @@ const OverviewPanel: React.FC = () => {
 
   return (
     <div>
-      <h3 className="font-display uppercase text-xl text-bauhaus-cream mb-4">Overview</h3>
-      <p className="text-bauhaus-cream/70 mb-6 max-w-2xl">
-        Use the tabs above to add, edit, reorder or delete Skills, Projects, Experience and Education. Changes save
-        straight to Firestore and show up on the public site the next time it loads.
+      <h3 className="text-xl font-bold text-white mb-4">Overview</h3>
+      <p className="text-white/55 mb-6 max-w-2xl">
+        Use the tabs above to add, edit, reorder or delete Skills, Projects, Experience, Education and
+        Certifications. Changes save straight to Firestore and show up on the public site the next time it loads.
       </p>
 
-      <div className="p-6 border-4 border-bauhaus-yellow mb-6 max-w-xl">
-        <h4 className="font-display uppercase text-bauhaus-cream mb-2">First time here?</h4>
-        <p className="text-bauhaus-cream/70 text-sm mb-4">
-          If your collections are empty, seed them with the portfolio's original content as a starting point — then
-          edit or delete from there.
+      <div className="p-6 rounded-2xl border border-white/15 mb-6 max-w-xl">
+        <h4 className="font-semibold text-white mb-2">Reset to resume content</h4>
+        <p className="text-white/55 text-sm mb-4">
+          Syncs every collection to exactly match the bundled starter content (sourced from the latest resume).
+          Use this the first time you connect Firebase, or any time you want to wipe out old/test data and start
+          clean - it deletes anything not in the starter set, so don't use it if you've added your own entries
+          you want to keep.
         </p>
         <button
           onClick={runSeed}
           disabled={seeding}
-          className="px-5 py-2 bg-bauhaus-yellow text-black font-bold uppercase text-sm border-2 border-black shadow-[4px_4px_0_0_#F2ECDE] hover:shadow-[0px_0px_0_0_#F2ECDE] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-150 disabled:opacity-50"
+          className="px-5 py-2 bg-white text-black font-semibold text-sm rounded-full hover:bg-white/85 transition-colors duration-200 disabled:opacity-50"
         >
           {seeding ? 'Seeding...' : 'Seed starter content'}
         </button>
-        {message && <p className="mt-3 text-bauhaus-cream/80 text-sm">{message}</p>}
+        {message && <p className="mt-3 text-white/70 text-sm">{message}</p>}
       </div>
 
       <button
         onClick={() => auth && signOut(auth)}
-        className="px-4 py-2 border-2 border-bauhaus-red text-bauhaus-red font-bold uppercase text-sm hover:bg-bauhaus-red hover:text-black transition-colors duration-150"
+        className="px-4 py-2 rounded-full border border-red-500/30 text-red-400 font-semibold text-sm hover:bg-red-500/10 hover:border-red-500/60 transition-colors duration-200"
       >
         Sign out
       </button>

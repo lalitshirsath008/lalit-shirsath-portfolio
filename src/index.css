@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0A0A0A;
+  --primary: #000000;
 }
 
 html {
@@ -14,26 +14,29 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--primary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 ::selection {
-  background-color: #F5C518;
-  color: #0A0A0A;
+  background-color: #2dd4bf;
+  color: #000000;
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
-  border-left: 2px solid #F2ECDE;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #F5C518;
-  border: 2px solid #0a0a0a;
+  background: #0f766e;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2dd4bf;
 }
 
 #root {

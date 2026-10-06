@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
   setDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -16,6 +17,7 @@ export const COLLECTIONS = {
   projects: 'projects',
   experiences: 'experiences',
   education: 'education',
+  certifications: 'certifications',
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;
@@ -54,4 +56,26 @@ export async function deleteItem(name: CollectionName, id: string) {
 export async function seedItem<T extends object>(name: CollectionName, id: string, data: T) {
   if (!db) throw new Error('Firebase is not configured yet.');
   return setDoc(doc(db, COLLECTIONS[name], id), data);
+}
+
+// Makes a collection exactly match the given starter set: deletes any existing
+// doc whose id isn't in `items`, then writes all of `items`. Used by "Seed
+// starter content" so re-seeding after the resume content changes doesn't leave
+// old entries (e.g. a previous career's projects) sitting alongside the new ones.
+export async function replaceCollection<T extends object>(
+  name: CollectionName,
+  items: (T & { id: string })[]
+) {
+  if (!db) throw new Error('Firebase is not configured yet.');
+  const existing = await getDocs(collection(db, COLLECTIONS[name]));
+  const keepIds = new Set(items.map((i) => i.id));
+
+  const batch = writeBatch(db);
+  existing.docs.forEach((d) => {
+    if (!keepIds.has(d.id)) batch.delete(d.ref);
+  });
+  items.forEach(({ id, ...rest }) => {
+    batch.set(doc(db!, COLLECTIONS[name], id), rest);
+  });
+  await batch.commit();
 }

@@ -3,11 +3,16 @@ import { ICON_NAMES, getIcon } from '../lib/icons';
 import { IconNamePair } from '../lib/types';
 
 const inputClass =
-  'block w-full bg-black border-2 border-bauhaus-cream px-3 py-2 text-bauhaus-cream placeholder-bauhaus-cream/40 focus:border-bauhaus-yellow focus:outline-none transition-colors duration-150';
+  'block w-full rounded-lg bg-white/[0.03] border border-white/15 px-3 py-2 text-white placeholder-white/30 focus:border-white/50 focus:outline-none transition-colors duration-200';
+
+const removeButtonClass =
+  'px-3 rounded-lg border border-red-500/30 text-red-400 font-bold hover:bg-red-500/10 hover:border-red-500/60 transition-colors duration-200 flex-shrink-0';
+
+const addLinkClass = 'text-xs font-semibold text-white/60 hover:text-white transition-colors duration-200';
 
 export const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="mb-4">
-    <label className="block text-xs font-bold uppercase tracking-widest text-bauhaus-cream/70 mb-1">{label}</label>
+    <label className="block text-xs font-medium uppercase tracking-widest text-white/50 mb-1">{label}</label>
     {children}
   </div>
 );
@@ -59,8 +64,8 @@ export const IconSelect: React.FC<{ value: string; onChange: (v: string) => void
   const Preview = getIcon(value);
   return (
     <div className="flex items-center gap-3">
-      <div className="w-10 h-10 flex items-center justify-center border-2 border-bauhaus-cream/40 flex-shrink-0">
-        <Preview className="w-5 h-5 text-bauhaus-cream" />
+      <div className="w-10 h-10 rounded-lg flex items-center justify-center border border-white/15 flex-shrink-0">
+        <Preview className="w-5 h-5 text-white" />
       </div>
       <select value={value} onChange={(e) => onChange(e.target.value)} className={inputClass}>
         {ICON_NAMES.map((n) => (
@@ -79,7 +84,7 @@ export const ColorInput: React.FC<{ value: string; onChange: (v: string) => void
       type="color"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-10 h-10 border-2 border-bauhaus-cream bg-black cursor-pointer flex-shrink-0"
+      className="w-10 h-10 rounded-lg border border-white/15 bg-black cursor-pointer flex-shrink-0"
     />
     <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className={inputClass} />
   </div>
@@ -108,16 +113,12 @@ export const StringListField: React.FC<{
             placeholder={placeholder}
             className={inputClass}
           />
-          <button
-            type="button"
-            onClick={() => remove(i)}
-            className="px-3 border-2 border-bauhaus-red text-bauhaus-red font-bold hover:bg-bauhaus-red hover:text-black transition-colors duration-150 flex-shrink-0"
-          >
+          <button type="button" onClick={() => remove(i)} className={removeButtonClass}>
             ✕
           </button>
         </div>
       ))}
-      <button type="button" onClick={add} className="text-xs font-bold uppercase text-bauhaus-yellow hover:underline">
+      <button type="button" onClick={add} className={addLinkClass}>
         + Add line
       </button>
     </div>
@@ -149,16 +150,12 @@ export const PairListField: React.FC<{
           <div className="w-44 flex-shrink-0">
             <IconSelect value={v.iconName} onChange={(val) => update(i, { iconName: val })} />
           </div>
-          <button
-            type="button"
-            onClick={() => remove(i)}
-            className="px-3 border-2 border-bauhaus-red text-bauhaus-red font-bold hover:bg-bauhaus-red hover:text-black transition-colors duration-150 flex-shrink-0"
-          >
+          <button type="button" onClick={() => remove(i)} className={removeButtonClass}>
             ✕
           </button>
         </div>
       ))}
-      <button type="button" onClick={add} className="text-xs font-bold uppercase text-bauhaus-yellow hover:underline">
+      <button type="button" onClick={add} className={addLinkClass}>
         + Add tag
       </button>
     </div>

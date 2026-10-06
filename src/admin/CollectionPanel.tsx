@@ -89,11 +89,11 @@ function CollectionPanel<T extends WithOrder>({
   return (
     <div>
       <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
-        <h3 className="font-display uppercase text-xl text-bauhaus-cream">{title}</h3>
+        <h3 className="text-xl font-bold text-white">{title}</h3>
         {!draft && (
           <button
             onClick={startAdd}
-            className="px-4 py-2 bg-bauhaus-yellow text-black font-bold uppercase text-sm border-2 border-black shadow-[4px_4px_0_0_#F2ECDE] hover:shadow-[0px_0px_0_0_#F2ECDE] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-150"
+            className="px-4 py-2 bg-white text-black font-semibold text-sm rounded-full hover:bg-white/85 transition-colors duration-200"
           >
             + Add new
           </button>
@@ -101,20 +101,20 @@ function CollectionPanel<T extends WithOrder>({
       </div>
 
       {draft && (
-        <div className="mb-8 p-6 bg-black border-4 border-bauhaus-blue">
+        <div className="mb-8 p-6 rounded-2xl bg-white/[0.03] border border-white/15">
           {renderForm(draft, (updater) => setDraft((prev) => (prev ? updater(prev) : prev)))}
-          {error && <p className="mt-3 text-bauhaus-red text-sm font-semibold">{error}</p>}
+          {error && <p className="mt-3 text-red-400 text-sm font-medium">{error}</p>}
           <div className="mt-4 flex gap-3">
             <button
               onClick={save}
               disabled={saving}
-              className="px-5 py-2 bg-bauhaus-blue text-black font-bold uppercase text-sm border-2 border-black disabled:opacity-50"
+              className="px-5 py-2 bg-white text-black font-semibold text-sm rounded-full hover:bg-white/85 transition-colors duration-200 disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save'}
             </button>
             <button
               onClick={cancel}
-              className="px-5 py-2 bg-black text-bauhaus-cream font-bold uppercase text-sm border-2 border-bauhaus-cream"
+              className="px-5 py-2 text-white/70 font-medium text-sm rounded-full border border-white/15 hover:text-white hover:border-white/40 transition-colors duration-200"
             >
               Cancel
             </button>
@@ -123,15 +123,15 @@ function CollectionPanel<T extends WithOrder>({
       )}
 
       {loading ? (
-        <p className="text-bauhaus-cream/60">Loading...</p>
+        <p className="text-white/50">Loading...</p>
       ) : items.length === 0 ? (
-        <p className="text-bauhaus-cream/60">No items yet. Add one above, or seed starter content from the Overview tab.</p>
+        <p className="text-white/50">No items yet. Add one above, or seed starter content from the Overview tab.</p>
       ) : (
         <div className="space-y-4">
           {items.map((item, idx) => (
             <div
               key={item.id}
-              className="p-4 border-2 border-bauhaus-cream/30 flex items-start justify-between gap-4 flex-wrap"
+              className="p-4 rounded-2xl border border-white/10 flex items-start justify-between gap-4 flex-wrap"
             >
               <div className="flex-1 min-w-[200px]">{renderSummary(item)}</div>
               <div className="flex flex-col gap-2 items-end flex-shrink-0">
@@ -139,14 +139,14 @@ function CollectionPanel<T extends WithOrder>({
                   <button
                     onClick={() => move(item, -1)}
                     disabled={idx === 0}
-                    className="px-2 py-1 border border-bauhaus-cream/40 text-bauhaus-cream text-xs disabled:opacity-30"
+                    className="px-2 py-1 rounded-lg border border-white/15 text-white/70 text-xs disabled:opacity-30 hover:text-white hover:border-white/40 transition-colors duration-200"
                   >
                     ↑
                   </button>
                   <button
                     onClick={() => move(item, 1)}
                     disabled={idx === items.length - 1}
-                    className="px-2 py-1 border border-bauhaus-cream/40 text-bauhaus-cream text-xs disabled:opacity-30"
+                    className="px-2 py-1 rounded-lg border border-white/15 text-white/70 text-xs disabled:opacity-30 hover:text-white hover:border-white/40 transition-colors duration-200"
                   >
                     ↓
                   </button>
@@ -154,13 +154,13 @@ function CollectionPanel<T extends WithOrder>({
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(item)}
-                    className="px-3 py-1 border-2 border-bauhaus-yellow text-bauhaus-yellow text-xs font-bold uppercase hover:bg-bauhaus-yellow hover:text-black transition-colors duration-150"
+                    className="px-3 py-1 rounded-lg border border-white/20 text-white/80 text-xs font-semibold hover:bg-white hover:text-black transition-colors duration-200"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => remove(item.id)}
-                    className="px-3 py-1 border-2 border-bauhaus-red text-bauhaus-red text-xs font-bold uppercase hover:bg-bauhaus-red hover:text-black transition-colors duration-150"
+                    className="px-3 py-1 rounded-lg border border-red-500/30 text-red-400 text-xs font-semibold hover:bg-red-500/10 hover:border-red-500/60 transition-colors duration-200"
                   >
                     Delete
                   </button>
