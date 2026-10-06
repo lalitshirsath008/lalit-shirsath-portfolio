@@ -100,6 +100,8 @@ function App() {
   const { scrollY } = useScroll();
   const navBg = useTransform(scrollY, [0, 80], ['rgba(0,0,0,0.55)', 'rgba(0,0,0,0.92)']);
   const navHeight = useTransform(scrollY, [0, 80], [64, 56]);
+  // Ambient background grid drifts slowly with scroll, for a sense of depth
+  const gridBgPositionY = useTransform(scrollY, (v) => `${v * 0.04}px`);
 
   // Hero content/glow drift + fade as the hero scrolls out of view
   const heroRef = useRef<HTMLElement>(null);
@@ -226,8 +228,8 @@ function App() {
     <div className="flex flex-col min-h-screen bg-black text-white relative font-sans">
       <ScrollProgress />
 
-      {/* Subtle schematic grid background */}
-      <div
+      {/* Subtle schematic grid background - drifts slowly with scroll */}
+      <motion.div
         className="fixed inset-0 z-0"
         style={{
           backgroundImage: `
@@ -235,7 +237,8 @@ function App() {
             linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)
           `,
           backgroundSize: '44px 44px',
-          backgroundPosition: 'center',
+          backgroundPositionX: 'center',
+          backgroundPositionY: gridBgPositionY,
         }}
       />
 
