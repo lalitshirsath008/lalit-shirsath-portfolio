@@ -57,6 +57,28 @@ starter content in `src/lib/seedData.ts`.
   deletes anything not in that bundled set. Good for first-time setup or resetting to a known-good state;
   don't use it if you've added entries you want to keep that aren't in that file.
 
+## My Corner (`/corner`)
+
+An Instagram-style page of personal posts - each has a title, a date, any number of photos, and free-form writing.
+Manage them from the **My Corner** tab in `/admin`.
+
+- Photos are resized in the browser and stored in Firestore (`postImages` collection, one doc per photo), not
+  Firebase Storage, since Storage requires the paid Blaze plan. Posts themselves live in the `posts` collection.
+- The first photo is the post's cover in the grid; reorder with ←/→ in the editor.
+- The Firestore rules above already cover both collections.
+
+## Jack (AI assistant)
+
+The "Ask Jack" button opens a chat that answers questions about Lalit only, using the resume facts in
+`api/jack.ts` plus the live Firestore content (skills, projects, experience, education, certifications,
+My Corner posts).
+
+- Powered by Groq (`openai/gpt-oss-120b`). The key is **server-only**: `api/jack.ts` runs as a Vercel function
+  in production and as Vite dev middleware locally (`vite.config.ts`), so it never reaches the browser.
+- Set `GROQ_API_KEY` in `.env` locally and in the Vercel dashboard (no `VITE_` prefix).
+- Groq's free tier allows ~8,000 tokens/minute; each question uses ~1,000, so roughly 7 questions a minute
+  across all visitors. When that's exceeded Jack asks people to try again in a minute.
+
 ## Deployment
 
 Works on any static host. `vercel.json` and `public/_redirects` are already set up so refreshing `/admin`

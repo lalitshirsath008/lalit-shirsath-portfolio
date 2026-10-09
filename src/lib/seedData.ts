@@ -1,4 +1,4 @@
-import { SkillDoc, ProjectDoc, ExperienceDoc, EducationDoc, CertificationDoc } from './types';
+import { SkillDoc, ProjectDoc, ExperienceDoc, EducationDoc, CertificationDoc, ActivityDoc } from './types';
 
 // Sourced from Lalit's latest resume (2026). Used two ways:
 //  1. Fallback shown on the public site before Firebase is configured (or while loading).
@@ -135,6 +135,14 @@ export const seedEducation: (EducationDoc & { id: string })[] = [
     achievements: ['Academic Excellence Award', 'Best Project Award'],
     order: 20,
   },
+];
+
+// From LinkedIn (diploma "Activities and Societies") plus photo & video editing
+export const seedActivities: (ActivityDoc & { id: string })[] = [
+  { id: 'cricket', title: 'Cricket', description: 'Played during diploma at MIT Polytechnic, Yeola.', iconName: 'MdSportsCricket', order: 10 },
+  { id: 'kabaddi', title: 'Kabaddi', description: 'Played during diploma at MIT Polytechnic, Yeola.', iconName: 'MdSportsKabaddi', order: 20 },
+  { id: 'acting', title: 'Acting', description: 'On stage during diploma at MIT Polytechnic, Yeola.', iconName: 'FaTheaterMasks', order: 30 },
+  { id: 'photo-video-editing', title: 'Photo & Video Editing', description: 'Editing photos and videos.', iconName: 'FaPhotoVideo', order: 40 },
 ];
 
 export const seedCertifications: (CertificationDoc & { id: string })[] = [

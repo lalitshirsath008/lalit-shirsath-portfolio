@@ -7,7 +7,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Inter"', 'sans-serif'],
+        // Poppins for Latin; Mukta (then system Devanagari fonts) for Marathi/Hindi text
+        // Handwritten captions tucked under section titles
+        script: ['"Great Vibes"', 'Georgia', 'serif'], // not 'cursive': that's Comic Sans on Windows
+        sans: ['"Poppins"', '"Mukta"', '"Noto Sans Devanagari"', '"Nirmala UI"', '"Kohinoor Devanagari"', 'sans-serif'],
       },
       animation: {
         'gradient': 'gradient 8s linear infinite',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { replaceCollection } from '../lib/content';
+import HeroEditor from './HeroEditor';
 import {
   seedSkills,
   seedProjects,
@@ -44,9 +45,12 @@ const OverviewPanel: React.FC = () => {
     <div>
       <h3 className="text-xl font-bold text-white mb-4">Overview</h3>
       <p className="text-white/55 mb-6 max-w-2xl">
-        Use the tabs above to add, edit, reorder or delete Skills, Projects, Experience, Education and
-        Certifications. Changes save straight to Firestore and show up on the public site the next time it loads.
+        Edit the homepage hero below, and use the tabs above to add, edit, reorder or delete Skills, Projects,
+        Experience, Education, Certifications, Activities and My Corner posts. Changes save straight to Firestore and
+        show up on the public site the next time it loads.
       </p>
+
+      <HeroEditor />
 
       <div className="p-6 rounded-2xl border border-white/15 mb-6 max-w-xl">
         <h4 className="font-semibold text-white mb-2">Reset to resume content</h4>

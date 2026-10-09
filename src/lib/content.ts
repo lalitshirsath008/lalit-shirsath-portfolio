@@ -18,6 +18,7 @@ export const COLLECTIONS = {
   experiences: 'experiences',
   education: 'education',
   certifications: 'certifications',
+  activities: 'activities',
 } as const;
 
 export type CollectionName = keyof typeof COLLECTIONS;

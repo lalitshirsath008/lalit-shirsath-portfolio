@@ -1,15 +1,13 @@
 {
-  "short_name": "Lalit's Portfolio",
-  "name": "Lalit Shirsath - Portfolio",
+  "short_name": "Lalit Shirsath",
+  "name": "Lalit Shirsath – Portfolio",
+  "description": "Official portfolio website of Lalit Shirsath – Data Analyst & AI Developer.",
   "icons": [
-    {
-      "src": "favicon.svg",
-      "sizes": "32x32",
-      "type": "image/svg+xml"
-    }
+    { "src": "/icon.png", "sizes": "500x500", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#000000"
-} 
+}

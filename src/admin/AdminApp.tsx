@@ -3,7 +3,8 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import LoginForm from './LoginForm';
 import OverviewPanel from './OverviewPanel';
-import { SkillsPanel, ProjectsPanel, ExperiencePanel, EducationPanel, CertificationsPanel } from './panels';
+import CornerPanel from './CornerPanel';
+import { SkillsPanel, ProjectsPanel, ExperiencePanel, EducationPanel, CertificationsPanel, ActivitiesPanel } from './panels';
 
 const tabs = [
   { key: 'overview', label: 'Overview' },
@@ -12,6 +13,8 @@ const tabs = [
   { key: 'experience', label: 'Experience' },
   { key: 'education', label: 'Education' },
   { key: 'certifications', label: 'Certifications' },
+  { key: 'activities', label: 'Activities' },
+  { key: 'corner', label: 'My Corner' },
 ] as const;
 
 type TabKey = (typeof tabs)[number]['key'];
@@ -78,6 +81,8 @@ const AdminApp: React.FC = () => {
         {tab === 'experience' && <ExperiencePanel />}
         {tab === 'education' && <EducationPanel />}
         {tab === 'certifications' && <CertificationsPanel />}
+        {tab === 'activities' && <ActivitiesPanel />}
+        {tab === 'corner' && <CornerPanel />}
       </main>
     </div>
   );
