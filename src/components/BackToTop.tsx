@@ -16,14 +16,27 @@ const BackToTop: React.FC = () => {
     <AnimatePresence>
       {visible && (
         <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, scale: 0.4, y: 20 }}
+          animate={{
+            opacity: 1,
+            scale: [0.4, 1.15, 0.95, 1],
+            y: 0,
+          }}
+          exit={{ opacity: 0, scale: 0.4, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Back to top"
           className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-teal-400 text-black flex items-center justify-center hover:bg-teal-300 transition-colors duration-200 shadow-[0_8px_30px_rgba(45,212,191,0.25)]"
         >
-          <FaArrowUp className="w-4 h-4" />
+          <motion.span
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
+            className="flex items-center justify-center"
+          >
+            <FaArrowUp className="w-4 h-4" />
+          </motion.span>
         </motion.button>
       )}
     </AnimatePresence>

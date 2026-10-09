@@ -18,6 +18,8 @@ import {
   FaArrowRight
 } from 'react-icons/fa';
 import charImage from './assets/char.png';
+import backgroundImage from './assets/background.avif';
+import dotTexture from './assets/dot.png';
 import resumePDF from './assets/Lalit_Shirsath_Resume_2026.pdf';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
@@ -34,11 +36,14 @@ import {
   seedCertifications,
 } from './lib/seedData';
 
+// Light-section card/tag styling (everything except the dark Hero/Footer bookends)
 const cardClass =
-  'bg-white/[0.03] border border-white/10 rounded-2xl transition-all duration-200 hover:border-teal-400/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_rgba(45,212,191,0.12)]';
+  'bg-neutral-100 border border-neutral-200 rounded-2xl transition-all duration-200 hover:border-teal-400/50 hover:bg-white hover:shadow-[0_8px_30px_rgba(45,212,191,0.15)]';
 
 const tagClass =
-  'inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/15 text-xs font-medium text-white/70 hover:border-teal-400/50 hover:text-teal-300 transition-colors duration-200';
+  'inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-neutral-300 text-xs font-medium text-neutral-600 hover:border-teal-400 hover:text-teal-600 hover:bg-teal-50 transition-colors duration-200';
+
+const iconBadgeClass = 'w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center flex-shrink-0';
 
 // Shared scroll-reveal spring config for section headings (Motion/Framer Motion)
 const headingMotion = {
@@ -96,12 +101,15 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Nav shrinks and darkens as the page scrolls
+  // Nav shrinks, darkens, and grows a shadow as the page scrolls
   const { scrollY } = useScroll();
   const navBg = useTransform(scrollY, [0, 80], ['rgba(0,0,0,0.55)', 'rgba(0,0,0,0.92)']);
   const navHeight = useTransform(scrollY, [0, 80], [64, 56]);
-  // Ambient background grid drifts slowly with scroll, for a sense of depth
-  const gridBgPositionY = useTransform(scrollY, (v) => `${v * 0.04}px`);
+  const navShadow = useTransform(
+    scrollY,
+    [0, 80],
+    ['0 0px 0px rgba(0,0,0,0)', '0 8px 24px rgba(0,0,0,0.25)']
+  );
 
   // Hero content/glow drift + fade as the hero scrolls out of view
   const heroRef = useRef<HTMLElement>(null);
@@ -111,7 +119,6 @@ function App() {
   });
   const heroContentY = useTransform(heroProgress, [0, 1], [0, 50]);
   const heroContentOpacity = useTransform(heroProgress, [0, 1], [1, 0.2]);
-  const heroGlowY = useTransform(heroProgress, [0, 1], [0, 140]);
 
   // Starts from the bundled seed content so the page never looks empty,
   // then swaps in live data from Firestore once it arrives (if configured).
@@ -225,26 +232,12 @@ function App() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white relative font-sans">
+    <div className="flex flex-col min-h-screen bg-white text-neutral-900 relative font-sans">
       <ScrollProgress />
 
-      {/* Subtle schematic grid background - drifts slowly with scroll */}
-      <motion.div
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '44px 44px',
-          backgroundPositionX: 'center',
-          backgroundPositionY: gridBgPositionY,
-        }}
-      />
-
       <motion.nav
-        style={{ backgroundColor: navBg }}
-        className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 border-b border-white/10"
+        style={{ backgroundColor: navBg, boxShadow: navShadow }}
+        className="fixed top-0 left-0 right-0 backdrop-blur-md z-50"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div style={{ height: navHeight }} className="flex justify-between items-center">
@@ -330,24 +323,23 @@ function App() {
         </AnimatePresence>
       </motion.nav>
 
-      <main className="flex-grow pt-8 relative z-10">
-        {/* Hero Section */}
+      <main className="flex-grow relative z-10">
+        {/* Hero Section - dark, matches the reference's dark hero bookend */}
         <section
           ref={heroRef}
           id="home"
-          className="scroll-mt-20 min-h-[85vh] flex items-center justify-center relative pt-[1.5cm] overflow-hidden"
+          className="scroll-mt-20 min-h-[85vh] flex items-center justify-center relative pt-[1.5cm] overflow-hidden bg-black text-white"
         >
-          {/* Atmospheric glow - drifts down as the hero scrolls out of view */}
-          <motion.div style={{ y: heroGlowY }} className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div
-              className="absolute w-[500px] h-[500px] rounded-full bg-teal-400/10 blur-[120px]"
-              style={{ top: '-10%', right: '0%' }}
-            />
-            <div
-              className="absolute w-[380px] h-[380px] rounded-full bg-amber-400/5 blur-[120px]"
-              style={{ top: '25%', left: '-8%' }}
-            />
-          </motion.div>
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black to-transparent z-0" />
           <motion.div
             style={{ y: heroContentY, opacity: heroContentOpacity }}
             className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
@@ -432,10 +424,10 @@ function App() {
           </motion.div>
         </section>
 
-        {/* Stats Strip */}
-        <section className="relative py-10 border-y border-white/10">
+        {/* Stats Strip - light, grey stat cards */}
+        <section className="relative py-20 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-white/10 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {[
                 { label: 'Years Experience', value: 1, suffix: '+', icon: FaBriefcase },
                 { label: 'Companies', value: experiences.length, suffix: '', icon: FaIndustry },
@@ -450,13 +442,13 @@ function App() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="flex flex-col items-center gap-2 py-4"
+                    className="bg-neutral-100 rounded-2xl p-6 sm:p-8"
                   >
-                    <Icon className="w-5 h-5 mb-1 text-teal-400" />
-                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                    <Icon className="w-5 h-5 mb-4 text-teal-500" />
+                    <p className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900">
                       <CountUp end={stat.value} suffix={stat.suffix} />
                     </p>
-                    <p className="text-xs uppercase tracking-widest text-white/40">{stat.label}</p>
+                    <p className="text-sm text-neutral-500 mt-1">{stat.label}</p>
                   </motion.div>
                 );
               })}
@@ -465,11 +457,11 @@ function App() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="scroll-mt-20 py-20 relative overflow-hidden">
+        <section id="skills" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Skills
             </motion.h2>
@@ -495,10 +487,10 @@ function App() {
                   <div key={skill.id ?? skill.name} className="group flex-shrink-0">
                     <div className={`${cardClass} rounded-2xl flex flex-col items-center justify-center p-5 min-w-[130px]`}>
                       <Icon className="w-10 h-10 mb-3" style={{ color: skill.color }} />
-                      <p className="text-sm font-medium text-center text-white/85 whitespace-nowrap">
+                      <p className="text-sm font-medium text-center text-neutral-800 whitespace-nowrap">
                         {skill.name}
                       </p>
-                      <div className="w-16 h-1 mt-3 rounded-full bg-white/10 overflow-hidden">
+                      <div className="w-16 h-1 mt-3 rounded-full bg-neutral-300 overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all duration-500"
                           style={{ width: `${skill.level}%`, backgroundColor: skill.color }}
@@ -513,11 +505,11 @@ function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="scroll-mt-20 py-20 relative">
+        <section id="projects" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Projects
             </motion.h2>
@@ -535,22 +527,22 @@ function App() {
                 >
                   <div className="p-7 flex flex-col h-full">
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <div className={iconBadgeClass}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-white leading-tight">
+                        <h3 className="text-lg font-semibold text-neutral-900 leading-tight">
                           {project.title}
                         </h3>
                       </div>
                     </div>
-                    <p className="text-white/55 mb-4">
+                    <p className="text-neutral-600 mb-4">
                       {project.description}
                     </p>
                     <div className="space-y-2 mb-5">
                       {project.details.map((detail, i) => (
-                        <div key={i} className="flex items-start gap-2 text-white/55 text-sm">
-                          <span className="w-1 h-1 mt-2 rounded-full bg-white/40 flex-shrink-0" />
+                        <div key={i} className="flex items-start gap-2 text-neutral-600 text-sm">
+                          <span className="w-1 h-1 mt-2 rounded-full bg-neutral-400 flex-shrink-0" />
                           <span>{detail}</span>
                         </div>
                       ))}
@@ -575,11 +567,11 @@ function App() {
         </section>
 
         {/* Experience Section */}
-        <section id="experience" className="scroll-mt-20 py-20 relative">
+        <section id="experience" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Experience
             </motion.h2>
@@ -597,23 +589,23 @@ function App() {
                   className={`${cardClass} p-7`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className={iconBadgeClass}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white leading-tight">
+                      <h3 className="text-lg font-semibold text-neutral-900 leading-tight">
                         {exp.title}
                       </h3>
                       <div className="flex items-center gap-2 mt-2">
-                        <CompanyIcon className="w-4 h-4 text-white/40" />
-                        <p className="text-white/55 font-medium">{exp.company}</p>
+                        <CompanyIcon className="w-4 h-4 text-neutral-400" />
+                        <p className="text-neutral-600 font-medium">{exp.company}</p>
                       </div>
-                      <p className="text-white/45 mt-1 flex items-center gap-2 text-sm">
+                      <p className="text-neutral-500 mt-1 flex items-center gap-2 text-sm">
                         <FaCalendarAlt className="w-3.5 h-3.5" />
                         {exp.period}
                       </p>
-                      <p className="mt-4 text-white/65 flex items-start gap-2">
-                        <FaTasks className="w-4 h-4 mt-1 flex-shrink-0 text-white/40" />
+                      <p className="mt-4 text-neutral-700 flex items-start gap-2">
+                        <FaTasks className="w-4 h-4 mt-1 flex-shrink-0 text-neutral-400" />
                         <span>{exp.description}</span>
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -629,8 +621,8 @@ function App() {
                       </div>
                       <div className="mt-4 space-y-2">
                         {exp.achievements.map((achievement, i) => (
-                          <div key={i} className="flex items-start gap-2 text-white/55 text-sm">
-                            <FaAward className="w-3.5 h-3.5 mt-0.5 text-white/40 flex-shrink-0" />
+                          <div key={i} className="flex items-start gap-2 text-neutral-600 text-sm">
+                            <FaAward className="w-3.5 h-3.5 mt-0.5 text-neutral-400 flex-shrink-0" />
                             <span>{achievement}</span>
                           </div>
                         ))}
@@ -645,11 +637,11 @@ function App() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="scroll-mt-20 py-20 relative">
+        <section id="education" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Education
             </motion.h2>
@@ -666,21 +658,21 @@ function App() {
                   className={`${cardClass} p-7`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <div className={iconBadgeClass}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white leading-tight">
+                      <h3 className="text-lg font-semibold text-neutral-900 leading-tight">
                         {edu.degree}
                       </h3>
-                      <p className="text-white/55 font-medium mt-2">{edu.institution}</p>
-                      <p className="text-white/45 mt-1 flex items-center gap-2 text-sm">
+                      <p className="text-neutral-600 font-medium mt-2">{edu.institution}</p>
+                      <p className="text-neutral-500 mt-1 flex items-center gap-2 text-sm">
                         <FaUniversity className="w-3.5 h-3.5" />
                         {edu.year}
                       </p>
                       <div className="mt-3 flex items-center gap-2">
-                        <FaAward className="w-3.5 h-3.5 text-white/40" />
-                        <p className="font-semibold text-white/80">{edu.description}</p>
+                        <FaAward className="w-3.5 h-3.5 text-neutral-400" />
+                        <p className="font-semibold text-neutral-800">{edu.description}</p>
                       </div>
                       <div className="mt-4 flex flex-wrap gap-2">
                         {edu.achievements.map((achievement, i) => (
@@ -700,11 +692,11 @@ function App() {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="scroll-mt-20 py-20 relative">
+        <section id="certifications" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Certifications
             </motion.h2>
@@ -720,11 +712,11 @@ function App() {
                     transition={{ delay: index * 0.1 }}
                     className={`${cardClass} p-6 flex flex-col items-center text-center gap-3`}
                   >
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                    <div className={iconBadgeClass}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <p className="font-semibold text-white leading-snug">{cert.title}</p>
-                    <p className="text-sm text-white/45">{cert.issuer}</p>
+                    <p className="font-semibold text-neutral-900 leading-snug">{cert.title}</p>
+                    <p className="text-sm text-neutral-500">{cert.issuer}</p>
                   </motion.div>
                 );
               })}
@@ -733,11 +725,11 @@ function App() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="scroll-mt-20 py-20 relative">
+        <section id="contact" className="scroll-mt-20 py-20 relative bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h2
               {...headingMotion}
-              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-white"
+              className="text-2xl sm:text-3xl font-bold text-center mb-12 text-neutral-900"
             >
               Contact Me
             </motion.h2>
@@ -750,44 +742,44 @@ function App() {
             >
               <a
                 href="tel:+919325109257"
-                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black transition-colors duration-200 group"
+                className="w-11 h-11 rounded-full border border-neutral-300 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 transition-colors duration-200 group"
                 title="Call me"
               >
-                <FaPhoneAlt className="w-4 h-4 text-white/70 group-hover:text-black transform -rotate-90" />
+                <FaPhoneAlt className="w-4 h-4 text-neutral-600 group-hover:text-black transform -rotate-90" />
               </a>
               <a
                 href="mailto:lalitshirsath008@gmail.com"
-                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black transition-colors duration-200 group"
+                className="w-11 h-11 rounded-full border border-neutral-300 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 transition-colors duration-200 group"
                 title="Email me"
               >
-                <FaEnvelope className="w-4 h-4 text-white/70 group-hover:text-black" />
+                <FaEnvelope className="w-4 h-4 text-neutral-600 group-hover:text-black" />
               </a>
               <a
                 href="https://github.com/lalitshirsath008"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black transition-colors duration-200 group"
+                className="w-11 h-11 rounded-full border border-neutral-300 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 transition-colors duration-200 group"
                 title="GitHub"
               >
-                <FaGithub className="w-4 h-4 text-white/70 group-hover:text-black" />
+                <FaGithub className="w-4 h-4 text-neutral-600 group-hover:text-black" />
               </a>
               <a
                 href="https://www.linkedin.com/in/lalit-shirsath-2a6526310/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black transition-colors duration-200 group"
+                className="w-11 h-11 rounded-full border border-neutral-300 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 transition-colors duration-200 group"
                 title="LinkedIn"
               >
-                <FaLinkedin className="w-4 h-4 text-white/70 group-hover:text-black" />
+                <FaLinkedin className="w-4 h-4 text-neutral-600 group-hover:text-black" />
               </a>
               <a
                 href="https://www.instagram.com/_lalitz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black transition-colors duration-200 group"
+                className="w-11 h-11 rounded-full border border-neutral-300 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 transition-colors duration-200 group"
                 title="Instagram"
               >
-                <FaInstagram className="w-4 h-4 text-white/70 group-hover:text-black" />
+                <FaInstagram className="w-4 h-4 text-neutral-600 group-hover:text-black" />
               </a>
             </motion.div>
 
@@ -795,7 +787,7 @@ function App() {
             <div className="max-w-xl mx-auto">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-xs font-medium uppercase tracking-widest text-white/50">
+                  <label htmlFor="name" className="block text-xs font-medium uppercase tracking-widest text-neutral-500">
                     Name
                   </label>
                   <input
@@ -805,12 +797,12 @@ function App() {
                     value={formData.name}
                     onChange={handleFormChange}
                     required
-                    className="mt-2 block w-full rounded-lg bg-white/[0.03] border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:border-teal-400/50 focus:outline-none transition-colors duration-200"
+                    className="mt-2 block w-full rounded-lg bg-white border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 focus:border-teal-400 focus:outline-none transition-colors duration-200"
                     placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-xs font-medium uppercase tracking-widest text-white/50">
+                  <label htmlFor="email" className="block text-xs font-medium uppercase tracking-widest text-neutral-500">
                     Email
                   </label>
                   <input
@@ -820,12 +812,12 @@ function App() {
                     value={formData.email}
                     onChange={handleFormChange}
                     required
-                    className="mt-2 block w-full rounded-lg bg-white/[0.03] border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:border-teal-400/50 focus:outline-none transition-colors duration-200"
+                    className="mt-2 block w-full rounded-lg bg-white border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 focus:border-teal-400 focus:outline-none transition-colors duration-200"
                     placeholder="you@example.com"
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-xs font-medium uppercase tracking-widest text-white/50">
+                  <label htmlFor="message" className="block text-xs font-medium uppercase tracking-widest text-neutral-500">
                     Message
                   </label>
                   <textarea
@@ -835,7 +827,7 @@ function App() {
                     onChange={handleFormChange}
                     required
                     rows={4}
-                    className="mt-2 block w-full rounded-lg bg-white/[0.03] border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:border-teal-400/50 focus:outline-none transition-colors duration-200 resize-none"
+                    className="mt-2 block w-full rounded-lg bg-white border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 focus:border-teal-400 focus:outline-none transition-colors duration-200 resize-none"
                     placeholder="Your message"
                   />
                 </div>
@@ -844,7 +836,7 @@ function App() {
                   disabled={formStatus.submitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-teal-400 text-black py-3.5 px-4 rounded-full font-semibold hover:bg-teal-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-neutral-900 text-white py-3.5 px-4 rounded-full font-semibold hover:bg-neutral-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {formStatus.submitting ? 'Sending...' : 'Send Message'}
                 </motion.button>
@@ -852,7 +844,7 @@ function App() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 p-4 rounded-lg bg-white/[0.04] border border-white/15 text-white/80 text-center"
+                    className="mt-4 p-4 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 text-center"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -866,7 +858,7 @@ function App() {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 p-4 rounded-lg bg-white/[0.04] border border-white/15 text-white/80 text-center"
+                    className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-center"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -882,10 +874,99 @@ function App() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-black border-t border-white/10 py-8 relative z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-white/40 text-sm">&copy; {new Date().getFullYear()} Lalit Shirsath. All rights reserved.</p>
+      {/* Footer - dark bookend matching the reference, with a teal radial glow */}
+      <footer className="relative overflow-hidden bg-black pt-20 pb-8 z-10">
+        <img
+          src={dotTexture}
+          alt=""
+          aria-hidden="true"
+          className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[700px] opacity-30 pointer-events-none select-none"
+        />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+            <div className="col-span-2 md:col-span-1">
+              <p className="text-xl font-bold text-white mb-2">Lalit Shirsath</p>
+              <p className="text-white/50 text-sm">
+                Data Analyst specializing in SQL, Python, Excel and Power BI.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/40 mb-4">Explore</p>
+              <div className="flex flex-col gap-2.5 text-sm">
+                {pillNavItems.map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    className="text-white/60 hover:text-teal-400 transition-colors duration-200 w-fit"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/40 mb-4">Connect</p>
+              <div className="flex flex-col gap-2.5 text-sm">
+                <a href="mailto:lalitshirsath008@gmail.com" className="text-white/60 hover:text-teal-400 transition-colors duration-200 w-fit">
+                  Email
+                </a>
+                <a href="tel:+919325109257" className="text-white/60 hover:text-teal-400 transition-colors duration-200 w-fit">
+                  Phone
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/lalit-shirsath-2a6526310/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-teal-400 transition-colors duration-200 w-fit"
+                >
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/lalitshirsath008"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-teal-400 transition-colors duration-200 w-fit"
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/40 mb-4">Social</p>
+              <div className="flex gap-3">
+                <a
+                  href="https://www.instagram.com/_lalitz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black text-white/70 transition-colors duration-200"
+                  title="Instagram"
+                >
+                  <FaInstagram className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://github.com/lalitshirsath008"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black text-white/70 transition-colors duration-200"
+                  title="GitHub"
+                >
+                  <FaGithub className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/lalit-shirsath-2a6526310/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-teal-400 hover:bg-teal-400 hover:text-black text-white/70 transition-colors duration-200"
+                  title="LinkedIn"
+                >
+                  <FaLinkedin className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <p className="pt-8 text-center text-white/40 text-sm">
+            &copy; {new Date().getFullYear()} Lalit Shirsath. All rights reserved.
+          </p>
         </div>
       </footer>
 
