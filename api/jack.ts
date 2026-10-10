@@ -19,7 +19,8 @@ const RATE_LIMIT = { requests: 20, windowMs: 10 * 60 * 1000 }; // per IP, best e
 
 // Facts from the resume and the site itself that aren't stored in Firestore
 const PROFILE = `
-Name: Lalit Shirsath
+Name: Lalit Shirsath (full name Lalit Sanjay Shirsath; also written Lalit S. Shirsath)
+Also known as: Jhakaas Lalit - a Marathi content creator on Instagram (@jhakaas.lalit, 73K+ followers) making content about history
 Role: Data Analyst
 Summary: Data Analyst with 1 year of experience in SQL, Python, Excel, and Power BI, specializing in business intelligence, KPI reporting, and predictive analytics. Proven ability to build dashboards, automate data workflows, and deliver actionable insights for manufacturing and AI-driven environments. Certified in Anthropic AI, IBM Spark, and Databricks.
 Soft skills: Problem-Solving, Adaptability, Team Collaboration, Documentation, Reports & Presentations
@@ -30,6 +31,7 @@ Contact:
 - LinkedIn: https://www.linkedin.com/in/lalit-shirsath-2a6526310/
 - GitHub: https://github.com/lalitshirsath008
 - Instagram: https://www.instagram.com/_lalitz
+- Instagram (content creator, Jhakaas Lalit): https://www.instagram.com/jhakaas.lalit/
 - The portfolio also has a contact form in its Contact section, and a downloadable resume.
 `.trim();
 

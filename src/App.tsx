@@ -1242,8 +1242,13 @@ function App() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
             <div className="col-span-2 md:col-span-1">
               <p className="text-xl font-bold text-white mb-2">Lalit Shirsath</p>
-              <p className="text-white/50 text-sm">
-                Data Analyst specializing in SQL, Python, Excel and Power BI.
+              {/* Every name people search for, in plain text (helps Google tie them to this site) */}
+              <p className="text-white/50 text-sm leading-relaxed">
+                Lalit Sanjay Shirsath, also known as{' '}
+                <a href="https://www.instagram.com/jhakaas.lalit/" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-teal-400">
+                  Jhakaas Lalit
+                </a>{' '}
+                - Data Analyst &amp; AI Developer, and Marathi content creator.
               </p>
             </div>
             <div>
@@ -1301,6 +1306,15 @@ function App() {
                   title="Instagram"
                 >
                   <FaInstagram className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.instagram.com/jhakaas.lalit/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="h-9 px-3 rounded-full border border-white/15 inline-flex items-center gap-1.5 text-xs font-semibold hover:border-teal-400 hover:bg-teal-400 hover:text-black text-white/70 transition-colors duration-200"
+                  title="Jhakaas Lalit on Instagram"
+                >
+                  <FaInstagram className="w-3.5 h-3.5" /> @jhakaas.lalit
                 </a>
                 <a
                   href="https://github.com/lalitshirsath008"
